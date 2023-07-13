@@ -9,20 +9,21 @@ mod app;
 fn main() -> Result<()> {
     let mut app = App::new();
     let mut rl = DefaultEditor::new()?;
+    println!("Model: {}", app.get_model());
     loop {
         match rl.readline(">> ") {
             Ok(line) => {
                 rl.add_history_entry(line.as_str());
-                println!("> {}", line);
+                println!("I: {}", line);
                 let res = app.execute(line.as_str());
-                println!("> {}", res);
+                println!("O: {}", res);
             }
             Err(ReadlineError::Interrupted) => {
-                println!("Ctr + c");
+                println!("See you...");
                 break;
             }
             Err(ReadlineError::Eof) => {
-                println!("Ctr + D");
+                println!("See you...");
                 break;
             }
             Err(err) => {

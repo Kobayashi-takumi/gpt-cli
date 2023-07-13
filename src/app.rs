@@ -22,11 +22,12 @@ impl App {
         let config = self.config.clone();
         let rt = tokio::runtime::Runtime::new().unwrap();
         let res = rt.block_on(async move {
+            let model = config.model.clone();
             let res = post(
                 "chat/completions",
                 config,
                 Completion {
-                    model: "gpt-4".to_string(),
+                    model,
                     messages,
                     temperature: 0.7,
                 },
@@ -40,5 +41,8 @@ impl App {
         let message = res.choices[0].message.clone();
         self.messages.push(message.clone());
         message.content
+    }
+    pub fn get_model(&self) -> String {
+        self.config.model.clone()
     }
 }

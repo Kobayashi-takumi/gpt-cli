@@ -13,12 +13,14 @@ const URI: &str = "https://api.openai.com/v1/";
 struct Setting {
     key: String,
     org: String,
+    model: Option<String>,
 }
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct Config {
     pub key: String,
     pub org: String,
+    pub model: String,
     pub base_uri: String,
 }
 
@@ -34,6 +36,7 @@ impl Config {
         Ok(Self {
             key: setting.key,
             org: setting.org,
+            model: setting.model.unwrap_or("gpt-4".to_string()),
             base_uri: URI.to_string(),
         })
     }
