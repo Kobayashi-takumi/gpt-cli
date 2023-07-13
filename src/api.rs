@@ -26,7 +26,7 @@ impl Config {
     pub fn new() -> Result<Self> {
         let strategy = choose_base_strategy().expect("Unable to find the config directory!");
         let mut path = strategy.config_dir();
-        path.push("gpt-rs");
+        path.push("gpt-cli");
         let path = path.join("config.toml");
         let buf: String = fs::read_to_string(path).expect("You must create config.toml in the directory ~/.config/gpt-rs. And then you must set key and org properties.");
         let setting: Setting = toml::from_str(&buf).unwrap();

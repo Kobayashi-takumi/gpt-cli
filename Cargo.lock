@@ -24,21 +24,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9c7d0618f0e0b7e8ff11427422b64564d5fb0be1940354bfe2e0529b18a9d9b8"
 
 [[package]]
-name = "app"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "etcetera",
- "hyper",
- "hyper-tls",
- "rustyline",
- "serde",
- "serde_json",
- "tokio",
- "toml",
-]
-
-[[package]]
 name = "autocfg"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -255,6 +240,21 @@ name = "gimli"
 version = "0.27.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b6c80984affa11d98d1b88b66ac8853f143217b399d3c74116778ff8fdb4ed2e"
+
+[[package]]
+name = "gpt-cli"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "etcetera",
+ "hyper",
+ "hyper-tls",
+ "rustyline",
+ "serde",
+ "serde_json",
+ "tokio",
+ "toml",
+]
 
 [[package]]
 name = "h2"
