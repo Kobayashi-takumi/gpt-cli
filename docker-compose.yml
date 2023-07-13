@@ -1,0 +1,15 @@
+version: "3"
+services:
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    tty: true
+    volumes:
+      - ./:/app:cache
+      - rust-target:/app/target
+      - cargo-cache:/usr/local/cargo/registry
+volumes:
+  cargo-cache:
+  rust-target:
