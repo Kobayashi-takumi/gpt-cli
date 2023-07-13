@@ -7,16 +7,28 @@ mod api;
 mod app;
 
 fn main() -> Result<()> {
-    let mut app = App::new();
+    let mut app = match App::new() {
+        Ok(val) => val,
+        Err(e) => {
+            println!("Error: {}", e.to_string());
+            return Err(e);
+        }
+    };
     let mut rl = DefaultEditor::new()?;
     println!("Model: {}", app.get_model());
     loop {
         match rl.readline(">> ") {
             Ok(line) => {
-                rl.add_history_entry(line.as_str());
+                rl.add_history_entry(line.as_str())?;
                 println!("I: {}", line);
-                let res = app.execute(line.as_str());
-                println!("O: {}", res);
+                match app.execute(line.as_str()) {
+                    Ok(res) => {
+                        println!("O: {}", res);
+                    }
+                    Err(e) => {
+                        println!("Error: {}", e.to_string());
+                    }
+                };
             }
             Err(ReadlineError::Interrupted) => {
                 println!("See you...");
