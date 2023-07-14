@@ -1,3 +1,4 @@
+use crate::loader::config_file;
 use anyhow::{anyhow, Result};
 use etcetera::{choose_base_strategy, BaseStrategy};
 use hyper::{body::to_bytes, http::request::Builder, Body, Client, Method, Request, StatusCode};
@@ -26,10 +27,7 @@ pub struct Config {
 
 impl Config {
     pub fn new() -> Result<Self> {
-        let strategy = choose_base_strategy().expect("Unable to find the config directory!");
-        let mut path = strategy.config_dir();
-        path.push("gpt-cli");
-        let path = path.join("config.toml");
+        let path = config_file()?;
         let buf: String = match fs::read_to_string(path) {
             Ok(val) => val,
             Err(_) => return Err(anyhow!("You must create config.toml in the directory ~/.config/gpt-rs. And then you must set key and org properties."))
