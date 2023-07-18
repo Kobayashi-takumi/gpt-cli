@@ -8,6 +8,8 @@ use serde_json::Value;
 use std::fs;
 use toml;
 
+pub mod model;
+
 const URI: &str = "https://api.openai.com/v1/";
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -76,67 +78,8 @@ pub async fn post<B: Serialize>(uri: &str, config: Config, body: B) -> Result<Va
     match status.is_success() {
         true => Ok(res_),
         false => {
-            let error: ErrorResponse = serde_json::from_value(res_)?;
+            let error: model::ErrorResponse = serde_json::from_value(res_)?;
             Err(anyhow!(error.error.message))
         }
     }
-}
-
-#[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
-pub struct Completion {
-    pub model: String,
-    pub messages: Vec<Message>,
-    pub temperature: f64,
-}
-
-#[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
-pub struct Message {
-    pub role: String,
-    pub content: String,
-}
-
-impl Message {
-    pub fn send(value: String) -> Self {
-        Self {
-            role: "user".to_string(),
-            content: value,
-        }
-    }
-}
-
-#[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
-pub struct Response {
-    pub id: String,
-    pub object: String,
-    pub created: u64,
-    pub model: String,
-    pub usage: Usage,
-    pub choices: Vec<Choice>,
-}
-
-#[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
-pub struct Usage {
-    pub prompt_tokens: u64,
-    pub completion_tokens: u64,
-    pub total_tokens: u64,
-}
-
-#[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
-pub struct Choice {
-    pub message: Message,
-    pub finish_reason: String,
-    pub index: u64,
-}
-
-#[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
-pub struct ErrorResponse {
-    pub error: ErrorContent,
-}
-
-#[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
-pub struct ErrorContent {
-    pub code: String,
-    pub message: String,
-    #[serde(rename = "type")]
-    pub type_: String,
 }
